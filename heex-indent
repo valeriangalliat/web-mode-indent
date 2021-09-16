@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+sed -i 's,<\.,<POINT,g;s,</\.,</POINT,g' "$@"
+web-mode-indent "$@"
+sed -i 's,<POINT,<.,g;s,</POINT,</.,g' "$@"

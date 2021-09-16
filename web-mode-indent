@@ -1,0 +1,36 @@
+#!/usr/bin/emacs --script
+
+; Automatically install web-mode.
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless (package-installed-p 'web-mode) (package-refresh-contents) (package-install 'web-mode))
+
+; No backup files.
+(setq make-backup-files nil)
+
+; No tabs.
+(setq-default indent-tabs-mode nil)
+
+; Indent with 2 spaces instead of 4.
+(setq web-mode-markup-indent-offset 2)
+
+; Open file, indent it, save and kill.
+(defun process-file (file)
+  (find-file file)
+  (web-mode)
+  (web-mode-buffer-indent)
+  (save-buffer)
+  (kill-buffer))
+
+; Shitty way to do a for loop.
+(defun process-files (files)
+  (while files
+    (process-file (car files))
+    (setq files (cdr files))))
+
+; Shitty way of removing the first 3 arguments (`/usr/bin/emacs`, `-scriptload`, `/path/to/web-mode-indent`).
+(process-files (cdr (cdr (cdr command-line-args))))
+
+; Oh, the irony...
+; vim: ft=lisp
