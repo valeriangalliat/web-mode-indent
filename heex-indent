@@ -1,5 +1,9 @@
 #!/bin/sh -e
 
-sed -i 's,<\.,<POINT,g;s,</\.,</POINT,g' "$@"
+sed -i.heex-indent-backup 's,<\.,<POINT,g;s,</\.,</POINT,g' "$@"
 web-mode-indent "$@"
-sed -i 's,<POINT,<.,g;s,</POINT,</.,g' "$@"
+sed -i.heex-indent-backup 's,<POINT,<.,g;s,</POINT,</.,g' "$@"
+
+for file in "$@"; do
+    rm "$file.heex-indent-backup"
+done
